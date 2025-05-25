@@ -4,7 +4,6 @@
 uvicorn app.main:app --reload
 ```
 
-Senha de acesso: `Hn28H67.!E-6EAp`
 
 ---
 
@@ -31,3 +30,10 @@ alembic history
 ```bash
 alembic downgrade <revision_id>
 ```
+
+---
+
+## 🔖 Controle de Versão
+
+Este projeto está versionado no Git e hospedado no GitHub.
+Utilize o fluxo de trabalho com branches (`main`, `dev`, etc.) para organizar o desenvolvimento.
