@@ -1,14 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
+from app.schemas.trabalho_schema import TrabalhoCreate, TrabalhoUpdate, TrabalhoResponse
+from app.services import trabalho_service
 from app.core.database import SessionLocal
-from app.models.trabalho import Trabalho
-from app.schemas.trabalho_schema import TrabalhoCreate, TrabalhoResponse
 
 router = APIRouter(prefix="/trabalhos", tags=["Trabalhos"])
 
-# Dependência de sessão
 def get_db():
     db = SessionLocal()
     try:
@@ -16,41 +15,23 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/", response_model=TrabalhoResponse)
-def criar_trabalho(trabalho: TrabalhoCreate, db: Session = Depends(get_db)):
-    novo_trabalho = Trabalho(**trabalho.dict())
-    db.add(novo_trabalho)
-    db.commit()
-    db.refresh(novo_trabalho)
-    return novo_trabalho
-
 @router.get("/", response_model=List[TrabalhoResponse])
-def listar_trabalhos(db: Session = Depends(get_db)):
-    return db.query(Trabalho).all()
+def listar(db: Session = Depends(get_db)):
+    return trabalho_service.listar_trabalhos(db)
 
-@router.get("/{id}", response_model=TrabalhoResponse)
-def buscar_trabalho(id: int, db: Session = Depends(get_db)):
-    trabalho = db.query(Trabalho).filter(Trabalho.id == id).first()
-    if not trabalho:
-        raise HTTPException(status_code=404, detail="Trabalho não encontrado")
-    return trabalho
+@router.get("/{trabalho_id}", response_model=TrabalhoResponse)
+def buscar(trabalho_id: int, db: Session = Depends(get_db)):
+    return trabalho_service.buscar_trabalho_por_id(db, trabalho_id)
 
-@router.put("/{id}", response_model=TrabalhoResponse)
-def atualizar_trabalho(id: int, dados: TrabalhoCreate, db: Session = Depends(get_db)):
-    trabalho = db.query(Trabalho).filter(Trabalho.id == id).first()
-    if not trabalho:
-        raise HTTPException(status_code=404, detail="Trabalho não encontrado")
-    for chave, valor in dados.dict().items():
-        setattr(trabalho, chave, valor)
-    db.commit()
-    db.refresh(trabalho)
-    return trabalho
+@router.post("/", response_model=TrabalhoResponse)
+def criar(dados: TrabalhoCreate, db: Session = Depends(get_db)):
+    return trabalho_service.criar_trabalho(db, dados)
 
-@router.delete("/{id}")
-def deletar_trabalho(id: int, db: Session = Depends(get_db)):
-    trabalho = db.query(Trabalho).filter(Trabalho.id == id).first()
-    if not trabalho:
-        raise HTTPException(status_code=404, detail="Trabalho não encontrado")
-    db.delete(trabalho)
-    db.commit()
+@router.put("/{trabalho_id}", response_model=TrabalhoResponse)
+def atualizar(trabalho_id: int, dados: TrabalhoUpdate, db: Session = Depends(get_db)):
+    return trabalho_service.atualizar_trabalho(db, trabalho_id, dados)
+
+@router.delete("/{trabalho_id}")
+def deletar(trabalho_id: int, db: Session = Depends(get_db)):
+    trabalho_service.deletar_trabalho(db, trabalho_id)
     return {"message": "Trabalho deletado com sucesso"}
