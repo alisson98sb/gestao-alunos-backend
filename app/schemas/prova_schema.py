@@ -9,6 +9,11 @@ class ProvaBase(BaseModel):
 class ProvaCreate(ProvaBase):
     pass
 
+class ProvaUpdate(BaseModel):
+    conteudo: str | None = None
+    data_prova: datetime | None = None
+    disciplina_id: int | None = None
+
 class ProvaResponse(ProvaBase):
     id: int
 

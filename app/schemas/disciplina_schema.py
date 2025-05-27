@@ -8,6 +8,11 @@ class DisciplinaBase(BaseModel):
 class DisciplinaCreate(DisciplinaBase):
     pass
 
+class DisciplinaUpdate(BaseModel):
+    nome: str | None = None
+    codigo: str | None = None
+    professor: str | None = None
+
 class DisciplinaResponse(DisciplinaBase):
     id: int
 

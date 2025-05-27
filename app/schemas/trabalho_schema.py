@@ -10,6 +10,12 @@ class TrabalhoBase(BaseModel):
 class TrabalhoCreate(TrabalhoBase):
     pass
 
+class TrabalhoUpdate(BaseModel):
+    titulo: str | None = None
+    descricao: str | None = None
+    data_entrega: datetime | None = None
+    disciplina_id: int | None = None
+
 class TrabalhoResponse(TrabalhoBase):
     id: int
 

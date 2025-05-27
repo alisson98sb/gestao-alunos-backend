@@ -1,14 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
+from app.schemas.aluno_schema import AlunoCreate, AlunoUpdate, AlunoResponse
+from app.services import aluno_service
 from app.core.database import SessionLocal
-from app.models.aluno import Aluno
-from app.schemas.aluno_schema import AlunoCreate, AlunoResponse
 
 router = APIRouter(prefix="/alunos", tags=["Alunos"])
 
-# Dependência de sessão
 def get_db():
     db = SessionLocal()
     try:
@@ -16,41 +15,23 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/", response_model=AlunoResponse)
-def criar_aluno(aluno: AlunoCreate, db: Session = Depends(get_db)):
-    novo_aluno = Aluno(**aluno.dict())
-    db.add(novo_aluno)
-    db.commit()
-    db.refresh(novo_aluno)
-    return novo_aluno
-
 @router.get("/", response_model=List[AlunoResponse])
-def listar_alunos(db: Session = Depends(get_db)):
-    return db.query(Aluno).all()
+def listar(db: Session = Depends(get_db)):
+    return aluno_service.listar_alunos(db)
 
-@router.get("/{id}", response_model=AlunoResponse)
-def buscar_aluno(id: int, db: Session = Depends(get_db)):
-    aluno = db.query(Aluno).filter(Aluno.id == id).first()
-    if not aluno:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    return aluno
+@router.get("/{aluno_id}", response_model=AlunoResponse)
+def buscar(aluno_id: int, db: Session = Depends(get_db)):
+    return aluno_service.buscar_aluno_por_id(db, aluno_id)
 
-@router.put("/{id}", response_model=AlunoResponse)
-def atualizar_aluno(id: int, dados: AlunoCreate, db: Session = Depends(get_db)):
-    aluno = db.query(Aluno).filter(Aluno.id == id).first()
-    if not aluno:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    for chave, valor in dados.dict().items():
-        setattr(aluno, chave, valor)
-    db.commit()
-    db.refresh(aluno)
-    return aluno
+@router.post("/", response_model=AlunoResponse)
+def criar(dados: AlunoCreate, db: Session = Depends(get_db)):
+    return aluno_service.criar_aluno(db, dados)
 
-@router.delete("/{id}")
-def deletar_aluno(id: int, db: Session = Depends(get_db)):
-    aluno = db.query(Aluno).filter(Aluno.id == id).first()
-    if not aluno:
-        raise HTTPException(status_code=404, detail="Aluno não encontrado")
-    db.delete(aluno)
-    db.commit()
+@router.put("/{aluno_id}", response_model=AlunoResponse)
+def atualizar(aluno_id: int, dados: AlunoUpdate, db: Session = Depends(get_db)):
+    return aluno_service.atualizar_aluno(db, aluno_id, dados)
+
+@router.delete("/{aluno_id}")
+def deletar(aluno_id: int, db: Session = Depends(get_db)):
+    aluno_service.deletar_aluno(db, aluno_id)
     return {"message": "Aluno deletado com sucesso"}

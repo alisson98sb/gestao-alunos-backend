@@ -1,14 +1,13 @@
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from typing import List
 
+from app.schemas.nota_schema import NotaCreate, NotaUpdate, NotaResponse
+from app.services import nota_service
 from app.core.database import SessionLocal
-from app.models.nota import Nota
-from app.schemas.nota_schema import NotaCreate, NotaResponse
 
 router = APIRouter(prefix="/notas", tags=["Notas"])
 
-# Dependência de sessão
 def get_db():
     db = SessionLocal()
     try:
@@ -16,41 +15,23 @@ def get_db():
     finally:
         db.close()
 
-@router.post("/", response_model=NotaResponse)
-def criar_nota(nota: NotaCreate, db: Session = Depends(get_db)):
-    nova_nota = Nota(**nota.dict())
-    db.add(nova_nota)
-    db.commit()
-    db.refresh(nova_nota)
-    return nova_nota
-
 @router.get("/", response_model=List[NotaResponse])
-def listar_notas(db: Session = Depends(get_db)):
-    return db.query(Nota).all()
+def listar(db: Session = Depends(get_db)):
+    return nota_service.listar_notas(db)
 
-@router.get("/{id}", response_model=NotaResponse)
-def buscar_nota(id: int, db: Session = Depends(get_db)):
-    nota = db.query(Nota).filter(Nota.id == id).first()
-    if not nota:
-        raise HTTPException(status_code=404, detail="Nota não encontrada")
-    return nota
+@router.get("/{nota_id}", response_model=NotaResponse)
+def buscar(nota_id: int, db: Session = Depends(get_db)):
+    return nota_service.buscar_nota_por_id(db, nota_id)
 
-@router.put("/{id}", response_model=NotaResponse)
-def atualizar_nota(id: int, dados: NotaCreate, db: Session = Depends(get_db)):
-    nota = db.query(Nota).filter(Nota.id == id).first()
-    if not nota:
-        raise HTTPException(status_code=404, detail="Nota não encontrada")
-    for chave, valor in dados.dict().items():
-        setattr(nota, chave, valor)
-    db.commit()
-    db.refresh(nota)
-    return nota
+@router.post("/", response_model=NotaResponse)
+def criar(dados: NotaCreate, db: Session = Depends(get_db)):
+    return nota_service.criar_nota(db, dados)
 
-@router.delete("/{id}")
-def deletar_nota(id: int, db: Session = Depends(get_db)):
-    nota = db.query(Nota).filter(Nota.id == id).first()
-    if not nota:
-        raise HTTPException(status_code=404, detail="Nota não encontrada")
-    db.delete(nota)
-    db.commit()
+@router.put("/{nota_id}", response_model=NotaResponse)
+def atualizar(nota_id: int, dados: NotaUpdate, db: Session = Depends(get_db)):
+    return nota_service.atualizar_nota(db, nota_id, dados)
+
+@router.delete("/{nota_id}")
+def deletar(nota_id: int, db: Session = Depends(get_db)):
+    nota_service.deletar_nota(db, nota_id)
     return {"message": "Nota deletada com sucesso"}
