@@ -11,6 +11,13 @@ class NotaBase(BaseModel):
 class NotaCreate(NotaBase):
     pass
 
+class NotaUpdate(BaseModel):
+    aluno_id: int | None = None
+    disciplina_id: int | None = None
+    valor: float | None = None
+    tipo: str | None = None
+    data: datetime | None = None
+
 class NotaResponse(NotaBase):
     id: int
 
