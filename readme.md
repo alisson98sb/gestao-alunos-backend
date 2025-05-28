@@ -122,7 +122,7 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 
 ## 🔄 Progresso do Projeto
 
-✅ Models e Migrations
+✅ Models e Migrations \n
 ✅ Testes manuais no Postman
 ✅ Serviços organizados
 ✅ Firebase configurado
