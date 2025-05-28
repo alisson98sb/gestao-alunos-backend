@@ -145,4 +145,4 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 ✅ Docker configurado e funcionando  
 ✅ Documentação Swagger  
 ⬜ Testes automatizados  
-⬜ Frontend ReactJS
+
