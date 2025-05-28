@@ -134,6 +134,19 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 
 ---
 
+
+## 🖼️ Diagramas do Projeto
+
+### 🔐 Diagrama de Classes 
+![Diagrama de Classes ](./docs/images/classes.png)
+
+### 🧩 Diagrama de Sequência
+![Diagrama de Sequência](./docs/images/sequencia.png)
+
+### 📌 Casos de Uso
+![Casos de Uso](./docs/images/casosdeuso.png)
+
+
 ## 🔄 Progresso do Projeto
 
 ✅ Models e Migrations  
