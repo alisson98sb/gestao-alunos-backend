@@ -5,8 +5,9 @@ from typing import List
 from app.schemas.trabalho_schema import TrabalhoCreate, TrabalhoUpdate, TrabalhoResponse
 from app.services import trabalho_service
 from app.core.database import SessionLocal
+from app.core.dependencies import get_current_user
 
-router = APIRouter(prefix="/trabalhos", tags=["Trabalhos"])
+router = APIRouter(prefix="/trabalhos", tags=["Trabalhos"],dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()

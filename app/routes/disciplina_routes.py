@@ -5,8 +5,9 @@ from typing import List
 from app.schemas.disciplina_schema import DisciplinaCreate, DisciplinaUpdate, DisciplinaResponse
 from app.services import disciplina_service
 from app.core.database import SessionLocal
+from app.core.dependencies import get_current_user
 
-router = APIRouter(prefix="/disciplinas", tags=["Disciplinas"])
+router = APIRouter(prefix="/disciplinas", tags=["Disciplinas"],dependencies=[Depends(get_current_user)])
 
 # Função para injetar o banco de dados
 def get_db():

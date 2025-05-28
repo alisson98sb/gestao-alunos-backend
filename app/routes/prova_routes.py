@@ -5,8 +5,9 @@ from typing import List
 from app.schemas.prova_schema import ProvaCreate, ProvaUpdate, ProvaResponse
 from app.services import prova_service
 from app.core.database import SessionLocal
+from app.core.dependencies import get_current_user
 
-router = APIRouter(prefix="/provas", tags=["Provas"])
+router = APIRouter(prefix="/provas", tags=["Provas"],dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()

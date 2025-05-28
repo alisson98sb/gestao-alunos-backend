@@ -5,8 +5,9 @@ from typing import List
 from app.schemas.nota_schema import NotaCreate, NotaUpdate, NotaResponse
 from app.services import nota_service
 from app.core.database import SessionLocal
+from app.core.dependencies import get_current_user
 
-router = APIRouter(prefix="/notas", tags=["Notas"])
+router = APIRouter(prefix="/notas", tags=["Notas"],dependencies=[Depends(get_current_user)])
 
 def get_db():
     db = SessionLocal()
