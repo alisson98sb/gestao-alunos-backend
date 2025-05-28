@@ -27,6 +27,20 @@ uvicorn app.main:app --reload
 
 ---
 
+## 🐳 Executando com Docker
+
+### Subir aplicação:
+```bash
+docker-compose up --build
+```
+
+### Parar aplicação:
+```bash
+docker-compose down
+```
+
+---
+
 ## 🔐 Autenticação Firebase
 
 A API usa autenticação JWT com tokens do Firebase. Para obter um token:
@@ -127,8 +141,8 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 ✅ Serviços organizados  
 ✅ Firebase configurado  
 ✅ CRUDs protegidos  
-✅ Rota de criação de usuario no firebase  
+✅ Rota de criação de usuário no Firebase  
+✅ Docker configurado e funcionando  
 ⬜ Testes automatizados  
 ⬜ Documentação Swagger  
-⬜ Frontend ReactJS  
-⬜ Docker  
+⬜ Frontend ReactJS
