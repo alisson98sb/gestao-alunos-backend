@@ -122,13 +122,13 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 
 ## 🔄 Progresso do Projeto
 
-✅ Models e Migrations
-✅ Testes manuais no Postman
-✅ Serviços organizados
-✅ Firebase configurado
-✅ CRUDs protegidos
-✅ Rota de criação de usuario no firebase
-⬜ Testes automatizados
-⬜ Documentação Swagger
-⬜ Frontend ReactJS
-⬜ Docker
+✅ Models e Migrations  
+✅ Testes manuais no Postman  
+✅ Serviços organizados  
+✅ Firebase configurado  
+✅ CRUDs protegidos  
+✅ Rota de criação de usuario no firebase  
+⬜ Testes automatizados  
+⬜ Documentação Swagger  
+⬜ Frontend ReactJS  
+⬜ Docker  
