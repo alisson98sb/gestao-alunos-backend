@@ -143,6 +143,6 @@ Este projeto está versionado com Git e hospedado no GitHub em repositórios sep
 ✅ CRUDs protegidos  
 ✅ Rota de criação de usuário no Firebase  
 ✅ Docker configurado e funcionando  
+✅ Documentação Swagger  
 ⬜ Testes automatizados  
-⬜ Documentação Swagger  
 ⬜ Frontend ReactJS
