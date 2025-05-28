@@ -14,3 +14,10 @@ alembic/versions/__pycache__/
 # IDEs
 .vscode/
 .idea/
+
+
+# Firebase credentials
+secrets/
+secrets/firebase_credentials.json
+*.json
+!*.example.json  # Permite arquivos de exemplo
